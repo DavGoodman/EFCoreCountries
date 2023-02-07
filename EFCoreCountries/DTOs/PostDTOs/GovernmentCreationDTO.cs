@@ -1,9 +1,8 @@
-﻿namespace EFCoreCountries.DTOs
+﻿namespace EFCoreCountries.DTOs.PostDTOs
 {
-    public class GovernmentDTO
+    public class GovernmentCreationDTO
     {
         public string SystemName { get; set; }
         public string SystemDescription { get; set; }
-        
     }
 }

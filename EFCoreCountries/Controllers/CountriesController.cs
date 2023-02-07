@@ -2,11 +2,13 @@
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using EFCoreCountries;
-using EFCoreCountries.DTOs;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using EFCoreCountries.Entities;
+using EFCoreCountries.DTOs.GetDTOs;
+using EFCoreCountries.DTOs.PostDTOs;
+using EFCoreCountries.DTOs.PutDTOs;
 
 namespace ESCoreMoviesDb.Controllers
 {
@@ -37,7 +39,7 @@ namespace ESCoreMoviesDb.Controllers
 
         }
 
-        [HttpGet("ById/{id:int}")]
+        [HttpGet("CountryDetailsById/{id:int}")]
         public async Task<ActionResult<CountryDTO>> Get(int id)
         {
             var country = await context.Countries
@@ -49,6 +51,8 @@ namespace ESCoreMoviesDb.Controllers
             return country;
 
         }
+
+      
 
         [HttpGet("Filtered")]
         public async Task<ActionResult<IEnumerable<CountryDTO>>> Filter([FromQuery] CountryFilterDTO countryFilterDto)
@@ -98,28 +102,57 @@ namespace ESCoreMoviesDb.Controllers
         {
             var country = mapper.Map<Country>(countryCreationDto);
 
-            //foreach (var Language in country.CountriesLanguages) context.Entry(Language).State = EntityState.Unchanged;
-            context.Entry(country.GovernmentId).State = EntityState.Unchanged;
+            context.Entry(country.Government).State = EntityState.Unchanged;
 
             context.Add(country);
             await context.SaveChangesAsync();
             return Ok(country);
 
         }
+
+
+
+        [HttpGet("GetCountryUpdateTemplateByID/{id:int}")]
+        public async Task<ActionResult> GetTemplate(int id)
+        {
+            var countryDB = await context.Countries
+                .Include(c => c.CountriesLanguages)
+                .Include(c => c.Leader)
+                .FirstOrDefaultAsync(c => c.Id == id);
+
+            if (countryDB == null) return NotFound();
+
+            return Ok(countryDB);
+
+        }
+
+        [HttpPut("{id:int}")]
+        public async Task<ActionResult> Put(CountryUpdateDTO countryUpdateDto , int id)
+        {
+            var countryDB = await context.Countries
+                .Include(c => c.CountriesLanguages)
+                .Include(c => c.Leader)
+                .Include(c => c.Government)
+                .FirstOrDefaultAsync(c => c.Id == id);
+
+            if (countryDB == null) return NotFound();
+
+            countryDB = mapper.Map(countryUpdateDto, countryDB);
+            await context.SaveChangesAsync();
+            return Ok();
+        }
+
+        [HttpDelete("{id:int}")]
+        public async Task<ActionResult> Delete(int id)
+        {
+            var country = await context.Countries.FirstOrDefaultAsync(p => p.Id == id);
+
+            if (country is null) return NotFound();
+
+            context.Remove(country);
+            await context.SaveChangesAsync();
+            return Ok();
+        }
     }
 }
 
-//{
-//    "name": "United Kingdom",
-//    "population": 67330000,
-//    "governmentId": 2,
-//    "leader": {
-//        "name": "Rishi Sunak",
-//        "party": "Conservative Party"
-//    },
-//    "countriesLanguages": [
-//    {
-//        "languageId": 1
-//    }
-//    ]
-//}

@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
-using EFCoreCountries.DTOs;
+using EFCoreCountries.DTOs.GetDTOs;
+using EFCoreCountries.DTOs.PostDTOs;
+using EFCoreCountries.DTOs.PutDTOs;
 
 namespace EFCoreCountries.Entities
 {
@@ -7,6 +9,7 @@ namespace EFCoreCountries.Entities
     {
         public AutoMapperProfiles()
         {
+            // Get DTOs
             CreateMap<Language, LanguageDTO>()
                 .ForMember(dto=>dto.Countries, ent=>ent.MapFrom(p=>p.CountriesLanguages.Select(cl=>cl.Country.Name)));
 
@@ -21,15 +24,34 @@ namespace EFCoreCountries.Entities
             CreateMap<Government, GovernmentDTO>();
 
 
+            CreateMap<Government, GovernmentWithCNamesDTO>()
+                .ForMember(dto => dto.Countries, ent=>ent.MapFrom(p=>p.Countries.Select(c=>c.Name)));
+            
 
+
+
+            // CREATION DTOs
             CreateMap<CountryCreationDTO, Country>()
-                .ForMember(ent=>ent.GovernmentId, dto=>dto.MapFrom(prop=>prop.GovernmentId));
-
-            CreateMap<CountryLanguageCreationDTO, CountryLanguage>();
+                .ForMember(ent=>ent.Government, dto=>dto.MapFrom(prop => new Government(){Id = prop.GovernmentId}));
+            //
+            CreateMap<CountryLanguageCreationForCDTO, CountryLanguage>();
 
             CreateMap<LeaderCreationDTO, Leader>();
 
-        }
+            CreateMap<LanguageCreationDTO, Language>();
+                //.ForMember(ent=>ent.CountriesLanguages.Select(p=>p.CountryId), dto=>dto.MapFrom(p=>p.CountryIds.Select(id => id)));
+            
+            CreateMap<CountryLanguageCreationForLDTO, CountryLanguage>();
 
+            CreateMap<GovernmentCreationDTO, Government>();
+
+
+
+            // Update DTOs
+            CreateMap<CountryUpdateDTO, Country>();
+
+            CreateMap<LeaderUpdateDTO, Leader>();
+
+        }
     }
 }

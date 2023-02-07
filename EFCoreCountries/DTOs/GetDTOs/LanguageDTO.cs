@@ -1,4 +1,4 @@
-﻿namespace EFCoreCountries.DTOs
+﻿namespace EFCoreCountries.DTOs.GetDTOs
 {
     public class LanguageDTO
     {

@@ -1,6 +1,6 @@
 ﻿using EFCoreCountries.Entities;
 
-namespace EFCoreCountries.DTOs
+namespace EFCoreCountries.DTOs.GetDTOs
 {
     public class CountryDTO
     {

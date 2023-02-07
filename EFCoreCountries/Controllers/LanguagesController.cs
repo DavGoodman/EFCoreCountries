@@ -1,13 +1,16 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
-using EFCoreCountries.DTOs;
+using EFCoreCountries.DTOs.GetDTOs;
+using EFCoreCountries.DTOs.PostDTOs;
+using EFCoreCountries.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Diagnostics.Metrics;
 
 namespace EFCoreCountries.Controllers
 {
     [ApiController]
-    [Route("api/countries")]
+    [Route("api/languages")]
     public class LanguagesController : ControllerBase
     {
         private readonly ApplicationDbContext context;
@@ -16,6 +19,16 @@ namespace EFCoreCountries.Controllers
         {
             this.context = context;
             this.mapper = mapper;
+        }
+
+        [HttpGet("All")]
+        public async Task<ActionResult> Get()
+        {
+            var languages = await context.Languages.ProjectTo<LanguageDTO>(mapper.ConfigurationProvider).ToListAsync();
+
+            if (languages == null) return NotFound();
+
+            return Ok(languages);
         }
 
         [HttpGet("byLanguageName")]
@@ -28,6 +41,17 @@ namespace EFCoreCountries.Controllers
             if (languages == null) return NotFound();
 
             return Ok(languages);
+        }
+
+
+        [HttpPost]
+        public async Task<ActionResult> Post(LanguageCreationDTO languageCreationDto)
+        {
+            var language = mapper.Map<Language>(languageCreationDto);
+
+            context.Add(language);
+            await context.SaveChangesAsync();
+            return Ok(language);
         }
 
     }

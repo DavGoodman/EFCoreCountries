@@ -7,8 +7,8 @@ namespace EFCoreCountries.Entities.Configurations
     {
         public void Configure(EntityTypeBuilder<Country> builder)
         {
-            builder.HasIndex(c => c.Name).IsUnique(false);
-            //builder.Property(c => c.Name).IsRequired();
+            builder.HasIndex(c => c.Name).IsUnique(true);
+            builder.Property(c => c.Name).IsRequired();
         }
     }
 }

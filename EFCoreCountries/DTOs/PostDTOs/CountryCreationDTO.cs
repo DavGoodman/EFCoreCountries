@@ -1,6 +1,6 @@
 ﻿using EFCoreCountries.Entities;
 
-namespace EFCoreCountries.DTOs
+namespace EFCoreCountries.DTOs.PostDTOs
 {
     public class CountryCreationDTO
     {
@@ -8,6 +8,6 @@ namespace EFCoreCountries.DTOs
         public int Population { get; set; }
         public int GovernmentId { get; set; }
         public LeaderCreationDTO Leader { get; set; }
-        public List<CountryLanguageCreationDTO> CountriesLanguages { get; set; }
+        public List<CountryLanguageCreationForCDTO> CountriesLanguages { get; set; }
     }
 }
