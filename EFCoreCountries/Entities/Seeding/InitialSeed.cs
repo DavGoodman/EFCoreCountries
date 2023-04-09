@@ -34,6 +34,7 @@ namespace EFCoreCountries.Entities.Seeding
 
             modelBuilder.Entity<Leader>().HasData(xiJinping, jonasGahrStøre, katrinJakobsdottir, joeBiden, orbanViktor);
 
+
             var english = new Language { Id = 1, LanguageName = "English"};
             var norwegian = new Language { Id = 2, LanguageName = "Norwegian"};
             var icelandic = new Language { Id = 3, LanguageName = "Icelandic"};
@@ -54,9 +55,9 @@ namespace EFCoreCountries.Entities.Seeding
             var chinaMandarin = new CountryLanguage { CountryId = china.Id , LanguageId = mandarin.Id };
             var chinaCantonese = new CountryLanguage { CountryId = china.Id , LanguageId = cantonese.Id };
 
-
             modelBuilder.Entity<CountryLanguage>().HasData(icelandIcelandic, norwayNorwegian, norwaySami,
                 hungaryHungarian, usaEnglish, chinaMandarin, chinaCantonese);
+
 
 
 

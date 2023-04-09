@@ -22,12 +22,21 @@ namespace EFCoreCountries
         {
             base.OnModelCreating(modelBuilder);
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+
+
+            //modelBuilder.Entity<Country>()                
+            //    .HasOne(c => c.Leader)
+            //    .WithOne()
+            //    .HasForeignKey<Leader>(l => l.CountryId)
+            //    .OnDelete(DeleteBehavior.SetNull);
+
+
             InitialSeed.Seed(modelBuilder);
         }
 
         public DbSet<Country> Countries { get; set; }
         public DbSet<Language> Languages { get; set; }
-        public DbSet<Leader> Leaders { get; set; }
+        public DbSet<Person> Persons { get; set; }
         public DbSet<Government> Governments { get; set; }
         public DbSet<CountryLanguage> CountriesLanguages { get; set; }
 

@@ -23,7 +23,6 @@ namespace EFCoreCountries.Entities
 
             CreateMap<Government, GovernmentDTO>();
 
-
             CreateMap<Government, GovernmentWithCNamesDTO>()
                 .ForMember(dto => dto.Countries, ent=>ent.MapFrom(p=>p.Countries.Select(c=>c.Name)));
             
@@ -32,15 +31,14 @@ namespace EFCoreCountries.Entities
 
             // CREATION DTOs
             CreateMap<CountryCreationDTO, Country>()
-                .ForMember(ent=>ent.Government, dto=>dto.MapFrom(prop => new Government(){Id = prop.GovernmentId}));
+                .ForMember(ent=>ent.Government, dto=>dto.MapFrom(prop => new Government(){ Id = prop.GovernmentId }));
             //
             CreateMap<CountryLanguageCreationForCDTO, CountryLanguage>();
 
             CreateMap<LeaderCreationDTO, Leader>();
 
             CreateMap<LanguageCreationDTO, Language>();
-                //.ForMember(ent=>ent.CountriesLanguages.Select(p=>p.CountryId), dto=>dto.MapFrom(p=>p.CountryIds.Select(id => id)));
-            
+
             CreateMap<CountryLanguageCreationForLDTO, CountryLanguage>();
 
             CreateMap<GovernmentCreationDTO, Government>();

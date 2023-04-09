@@ -7,7 +7,13 @@ namespace EFCoreCountries.Entities.Configurations
     {
         public void Configure(EntityTypeBuilder<Leader> builder)
         {
-            builder.Property(p => p.Name).IsRequired();
+
+
+            builder.HasOne(p => p.Country)
+                .WithOne(c => c.Leader)
+                .HasForeignKey<Leader>(p => p.CountryId);
+
         }
+    
     }
 }
